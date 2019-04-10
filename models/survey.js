@@ -7,6 +7,9 @@ class Survey {
     if (!Array.isArray(questions)) {
       errors.push('Expect array of questions');
     }
+    if (questions.length < 1) {
+      errors.push('Expect at least one question');
+    }
     if (errors.length > 0) {
       throw new Error(errors.join('. '));
     }
