@@ -30,7 +30,7 @@ const saveSurvey = (survey, isUpdate = false) => {
           .then((json) => {
             const surveys = JSON.parse(json);
             if (!isUpdate && surveys[survey.name]) {
-              return Promise.reject(new Error(`Survey with name ${survey.name} already exists`));
+              return Promise.reject(new Error(`Survey ${survey.name} already exists`));
             }
 
             const newSurveys = { ...surveys };

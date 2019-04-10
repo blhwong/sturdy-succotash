@@ -5,14 +5,12 @@ module.exports = (req, res) => {
   const { name, answers } = req.body;
   return FileService.getSurvey(name)
     .then((survey) => {
-      const surveyAfter = SurveyService.takeSurvey(survey, answers);
-      return FileService.saveSurvey(surveyAfter, true);
-    })
-    .then(() => res.sendStatus(200))
-    .catch((error) => {
-      if (error.code === 'ENOENT') {
-        return res.sendStatus(404);
+      if (!survey) {
+        return res.status(404).send(`Survey ${name} does not exist`);
       }
-      return res.status(500).send(error);
-    });
+      const surveyAfter = SurveyService.takeSurvey(survey, answers);
+      return FileService.saveSurvey(surveyAfter, true)
+        .then(() => res.sendStatus(200));
+    })
+    .catch(error => res.status(500).send(error));
 };
