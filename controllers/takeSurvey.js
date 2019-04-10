@@ -6,7 +6,7 @@ module.exports = (req, res) => {
   return FileService.getSurvey(name)
     .then((survey) => {
       const surveyAfter = SurveyService.takeSurvey(survey, answers);
-      return FileService.saveSurvey(surveyAfter);
+      return FileService.saveSurvey(surveyAfter, true);
     })
     .then(() => res.sendStatus(200))
     .catch((error) => {

@@ -3,7 +3,21 @@ const fs = Promise.promisifyAll(require('fs'));
 
 const defaultFileName = './data.json';
 
-const saveSurvey = (survey, fileName = defaultFileName) => {
+const getSurvey = (name, fileName = defaultFileName) => {
+  return fs.openAsync(fileName, 'r')
+    .then(() => {
+      return fs.readFileAsync(fileName)
+        .then((surveys) => {
+          return JSON.parse(surveys)[name];
+        });
+    })
+    .catch((error) => {
+      console.error(`getSurvey- Error: ${error}`);
+      throw error;
+    });
+};
+
+const saveSurvey = (survey, isUpdate = false, fileName = defaultFileName) => {
   return fs.openAsync(fileName, 'wx')
     .then(() => {
       const surveys = {};
@@ -15,7 +29,7 @@ const saveSurvey = (survey, fileName = defaultFileName) => {
         return fs.readFileAsync(fileName)
           .then((json) => {
             const surveys = JSON.parse(json);
-            if (surveys[survey.name]) {
+            if (!isUpdate && surveys[survey.name]) {
               return Promise.reject(new Error(`Survey with name ${survey.name} already exists`));
             }
 
@@ -25,20 +39,6 @@ const saveSurvey = (survey, fileName = defaultFileName) => {
           });
       }
       console.error(`saveSurvey- Error: ${error}`);
-      throw error;
-    });
-};
-
-const getSurvey = (name, fileName = defaultFileName) => {
-  return fs.openAsync(fileName, 'r')
-    .then(() => {
-      return fs.readFileAsync(fileName)
-        .then((surveys) => {
-          return JSON.parse(surveys)[name];
-        });
-    })
-    .catch((error) => {
-      console.error(`getSurvey- Error: ${error}`);
       throw error;
     });
 };

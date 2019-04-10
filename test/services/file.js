@@ -18,7 +18,7 @@ describe('File service', () => {
   });
 
   it('can save surveys', () => {
-    return FileService.saveSurvey(testSurvey, testFile);
+    return FileService.saveSurvey(testSurvey, false, testFile);
   });
 
   it('can get surveys', () => {

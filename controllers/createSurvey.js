@@ -7,6 +7,7 @@ module.exports = (req, res) => {
   return FileService.saveSurvey(survey)
     .then(() => res.sendStatus(200))
     .catch((error) => {
+      console.error({ error });
       if (error.includes('already exists')) {
         return res.status(400).send(error);
       }
