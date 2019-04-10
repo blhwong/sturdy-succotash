@@ -128,4 +128,17 @@ describe('E2E tests', () => {
         throw error;
       });
   });
+
+  it('will error on bad answers', () => {
+    const badAnswers = { ...answers };
+    badAnswers[questionValues[0]] = 123;
+    badAnswers[questionValues[0]] = 'abc';
+    return takeSurvey({ name, answers: badAnswers })
+      .then((res) => {
+        expect(res).to.have.status(400);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  });
 });

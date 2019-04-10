@@ -14,6 +14,9 @@ const takeSurvey = (survey, answers) => {
     if (!surveyAfter.questions[question]) {
       throw createError('Question not found in survey');
     }
+    if (typeof answer !== 'boolean') {
+      throw createError('Expect boolean answer');
+    }
     if (answer) {
       surveyAfter.questions[question].true += 1;
     } else {

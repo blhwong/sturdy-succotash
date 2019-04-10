@@ -4,13 +4,33 @@
     "questions": {
       "Do you like coffee?": {
         "value": "Do you like coffee?",
-        "true": 2,
+        "true": 12,
+        "false": 9
+      },
+      "Do you like shopping?": {
+        "value": "Do you like shopping?",
+        "true": 14,
+        "false": 7
+      }
+    }
+  },
+  "survey 2": {
+    "name": "survey 2",
+    "questions": {
+      "Do you like coffee?": {
+        "value": "Do you like coffee?",
+        "true": 0,
         "false": 0
       },
       "Do you like shopping?": {
         "value": "Do you like shopping?",
         "true": 0,
-        "false": 2
+        "false": 0
+      },
+      "Are you under the age of 30?": {
+        "value": "Are you under the age of 30?",
+        "true": 0,
+        "false": 0
       }
     }
   }
