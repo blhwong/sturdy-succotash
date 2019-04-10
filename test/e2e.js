@@ -123,6 +123,7 @@ describe('E2E tests', () => {
     return takeSurvey({ name, answers: { 'Non-existent question': true } })
       .then((res) => {
         expect(res).to.have.status(400);
+        expect(res.error.text).to.equal('Question not found in survey');
       })
       .catch((error) => {
         throw error;
@@ -136,6 +137,29 @@ describe('E2E tests', () => {
     return takeSurvey({ name, answers: badAnswers })
       .then((res) => {
         expect(res).to.have.status(400);
+        expect(res.error.text).to.equal('Expect boolean answer');
+      })
+      .catch((error) => {
+        throw error;
+      });
+  });
+
+  it('will error on taking survey without name', () => {
+    return takeSurvey({ name: '', answers })
+      .then((res) => {
+        expect(res).to.have.status(400);
+        expect(res.error.text).to.equal('Missing param survey name');
+      })
+      .catch((error) => {
+        throw error;
+      });
+  });
+
+  it('will error with nothing in search query', () => {
+    return getSurvey('')
+      .then((res) => {
+        expect(res).to.have.status(400);
+        expect(res.error.text).to.equal('No name in search query');
       })
       .catch((error) => {
         throw error;

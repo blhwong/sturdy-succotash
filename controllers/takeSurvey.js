@@ -4,6 +4,9 @@ const handleError = require('../util/handleError');
 
 module.exports = (req, res) => {
   const { name, answers } = req.body;
+  if (!name) {
+    return res.status(400).send('Missing param survey name');
+  }
   return FileService.getSurvey(name)
     .then((survey) => {
       if (!survey) {
