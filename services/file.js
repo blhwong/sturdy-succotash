@@ -1,9 +1,9 @@
-const Promise = require('bluebird');
+global.Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'));
 
-const defaultFileName = './data.json';
+const fileName = process.env.NODE_ENV === 'test' ? './test.json' : './data.json';
 
-const getSurvey = (name, fileName = defaultFileName) => {
+const getSurvey = (name) => {
   return fs.openAsync(fileName, 'r')
     .then(() => {
       return fs.readFileAsync(fileName)
@@ -17,7 +17,7 @@ const getSurvey = (name, fileName = defaultFileName) => {
     });
 };
 
-const saveSurvey = (survey, isUpdate = false, fileName = defaultFileName) => {
+const saveSurvey = (survey, isUpdate = false) => {
   return fs.openAsync(fileName, 'wx')
     .then(() => {
       const surveys = {};

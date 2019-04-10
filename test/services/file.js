@@ -1,28 +1,27 @@
 const { expect } = require('chai');
-const Promise = require('bluebird');
-const fs = Promise.promisifyAll(require('fs'));
+const { removeFile } = require('../util');
 const SurveyService = require('../../services/survey');
 const FileService = require('../../services/file');
 
 describe('File service', () => {
   let testSurvey;
-  const testFile = 'test.json';
+  const testFile = './test.json';
   const testSurveyName = 'test survey';
   const testQuestions = ['Do you workout 3x a week?', 'Do you sleep 8 hours a night?'];
   beforeEach(() => {
     testSurvey = SurveyService.createSurvey(testSurveyName, testQuestions);
   });
 
-  after(() => {
-    return fs.unlinkAsync(testFile);
-  });
+  before(() => removeFile(testFile));
+
+  after(() => removeFile(testFile));
 
   it('can save surveys', () => {
-    return FileService.saveSurvey(testSurvey, false, testFile);
+    return FileService.saveSurvey(testSurvey, false);
   });
 
   it('can get surveys', () => {
-    return FileService.getSurvey(testSurveyName, testFile)
+    return FileService.getSurvey(testSurveyName)
       .then((survey) => {
         expect(survey.name).to.equal(testSurveyName);
       });

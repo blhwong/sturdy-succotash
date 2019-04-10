@@ -1,0 +1,17 @@
+{
+  "survey 1": {
+    "name": "survey 1",
+    "questions": {
+      "Do you like coffee?": {
+        "value": "Do you like coffee?",
+        "true": 2,
+        "false": 0
+      },
+      "Do you like shopping?": {
+        "value": "Do you like shopping?",
+        "true": 0,
+        "false": 2
+      }
+    }
+  }
+}
