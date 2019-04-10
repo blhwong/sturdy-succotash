@@ -1,5 +1,6 @@
 global.Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'));
+const createError = require('../util/createError');
 
 const fileName = process.env.NODE_ENV === 'test' ? './test.json' : './data.json';
 
@@ -30,7 +31,7 @@ const saveSurvey = (survey, isUpdate = false) => {
           .then((json) => {
             const surveys = JSON.parse(json);
             if (!isUpdate && surveys[survey.name]) {
-              return Promise.reject(new Error(`Survey ${survey.name} already exists`));
+              return Promise.reject(createError(`Survey ${survey.name} already exists`));
             }
 
             const newSurveys = { ...surveys };

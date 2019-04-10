@@ -1,4 +1,5 @@
 const FileService = require('../services/file');
+const handleError = require('../util/handleError');
 
 module.exports = (req, res) => {
   const { name } = req.query;
@@ -13,6 +14,6 @@ module.exports = (req, res) => {
       if (error.code === 'ENOENT') {
         return res.status(404).send(`Survey ${name} does not exist`);
       }
-      return res.status(500).send(error);
+      return handleError(res, error);
     });
 };

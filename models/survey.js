@@ -1,3 +1,5 @@
+const createError = require('../util/createError');
+
 class Survey {
   constructor(name, questions) {
     const errors = [];
@@ -11,7 +13,7 @@ class Survey {
       errors.push('Expect at least one question');
     }
     if (errors.length > 0) {
-      throw new Error(errors.join('. '));
+      throw createError(errors.join('. '));
     }
     this.name = name;
     this.questions = questions.reduce((acc, curr) => {

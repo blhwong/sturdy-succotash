@@ -1,5 +1,6 @@
 const Survey = require('../models/survey');
 const Question = require('../models/question');
+const createError = require('../util/createError');
 
 const createSurvey = (name, questionValues) => {
   const questions = questionValues.map(value => new Question(value));
@@ -11,7 +12,7 @@ const takeSurvey = (survey, answers) => {
   const surveyAfter = { ...survey };
   Object.entries(answers).forEach(([question, answer]) => {
     if (!surveyAfter.questions[question]) {
-      throw new Error('Question not found in survey');
+      throw createError('Question not found in survey');
     }
     if (answer) {
       surveyAfter.questions[question].true += 1;

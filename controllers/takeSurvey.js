@@ -1,5 +1,6 @@
 const FileService = require('../services/file');
 const SurveyService = require('../services/survey');
+const handleError = require('../util/handleError');
 
 module.exports = (req, res) => {
   const { name, answers } = req.body;
@@ -12,5 +13,5 @@ module.exports = (req, res) => {
       return FileService.saveSurvey(surveyAfter, true)
         .then(() => res.sendStatus(200));
     })
-    .catch(error => res.status(500).send(error));
+    .catch(error => handleError(res, error));
 };

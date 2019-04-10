@@ -15,15 +15,21 @@ describe('E2E tests', () => {
     [questionValues[1]]: false,
   };
 
-  const createSurvey = () => {
+  const createSurvey = (variables) => {
     return chai.request(app)
       .post('/survey/create')
-      .send({ name, questionValues });
+      .send(variables);
   };
 
-  const getSurvey = () => {
+  const getSurvey = (n) => {
     return chai.request(app)
-      .get(`/survey?name=${name}`);
+      .get(`/survey?name=${n}`);
+  };
+
+  const takeSurvey = (variables) => {
+    return chai.request(app)
+      .post('/survey/take')
+      .send(variables);
   };
 
   before(() => removeFile(testFile));
@@ -31,7 +37,7 @@ describe('E2E tests', () => {
   after(() => removeFile(testFile));
 
   it('will not find survey', () => {
-    return getSurvey()
+    return getSurvey(name)
       .then((res) => {
         expect(res).to.have.status(404);
         expect(res.error.text).to.equal(`Survey ${name} does not exist`);
@@ -42,7 +48,7 @@ describe('E2E tests', () => {
   });
 
   it('can create a survey', () => {
-    return createSurvey()
+    return createSurvey({ name, questionValues })
       .then((res) => {
         expect(res).to.have.status(201);
       })
@@ -52,7 +58,7 @@ describe('E2E tests', () => {
   });
 
   it('will not create a duplicate survey', () => {
-    return createSurvey()
+    return createSurvey({ name, questionValues })
       .then((res) => {
         expect(res).to.have.status(400);
         expect(res.error.text).to.equal(`Survey ${name} already exists`);
@@ -63,9 +69,7 @@ describe('E2E tests', () => {
   });
 
   it('can take a survey', () => {
-    return chai.request(app)
-      .post('/survey/take')
-      .send({ name, answers })
+    return takeSurvey({ name, answers })
       .then((res) => {
         expect(res).to.have.status(200);
       })
@@ -89,7 +93,7 @@ describe('E2E tests', () => {
   });
 
   it('can get survey results', () => {
-    return getSurvey()
+    return getSurvey(name)
       .then((res) => {
         expect(res).to.have.status(200);
         expect(res.body.name).to.equal(name);
@@ -105,11 +109,20 @@ describe('E2E tests', () => {
 
   it('will not get non-existent surveys', () => {
     const nonExistent = 'non-existent';
-    return chai.request(app)
-      .get(`/survey?name=${nonExistent}`)
+    return getSurvey(nonExistent)
       .then((res) => {
         expect(res).to.have.status(404);
         expect(res.error.text).to.equal(`Survey ${nonExistent} does not exist`);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  });
+
+  it('will error on non-existent questions', () => {
+    return takeSurvey({ name, answers: { 'Non-existent question': true } })
+      .then((res) => {
+        expect(res).to.have.status(400);
       })
       .catch((error) => {
         throw error;
