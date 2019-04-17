@@ -43,9 +43,10 @@ npm test
 - POST
   - `/survey/create`
     - Creates survey
-    - `Content-Type: application/json`
     - Use `name` (string), and `questionValues` (array of string) to determine the name and questions for the survey
-    - ```
+    - `Content-Type: application/json`
+    - ```json
+      // Request body example
       {
         "name": "survey 1",
         "questionValues": ["Do you like coffee?", "Do you like shopping?"]
@@ -53,9 +54,10 @@ npm test
       ```
   - `/survey/take`
     - Takes survey
-    - `Content-Type: application/json`
     - Use `name` (string) and `answers` (object) to specify survey name and answers. Answers object contains question name as key and true or false as value.
-    - ```
+    - `Content-Type: application/json`
+    - ```json
+      // Request body example
       {
         "name": "survey 1",
         "answers": {
